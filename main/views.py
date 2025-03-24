@@ -2,14 +2,28 @@ from rest_framework import generics, status, viewsets
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import get_object_or_404
+from rest_framework.filters import SearchFilter, OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.pagination import PageNumberPagination
 
 from .serializers import *
 from rest_framework.decorators import action
 
 
+class MyPaginationClass(PageNumberPagination):
+    page_size = 2
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+
+
 class QoshiqchiModelViewSet(ModelViewSet):
     queryset = Qoshiqchi.objects.all()
     serializer_class = QoshiqchiSerializer
+
+    filter_backends = [SearchFilter, OrderingFilter, DjangoFilterBackend]
+    search_fields = ['ism', 'davlat']
+    ordering_fields = ['t_sana']
+    pagination_class = MyPaginationClass
 
     @action(detail=True, methods=['get'])
     def albomlar(self, request, pk):
@@ -42,6 +56,11 @@ class AlbomModelViewSet(ModelViewSet):
     queryset = Albom.objects.all()
     serializer_class = AlbomSerializer
 
+    filter_backends = [SearchFilter, OrderingFilter, DjangoFilterBackend]
+    search_fields = ['nom']
+    ordering_fields = ['sana']
+    pagination_class = MyPaginationClass
+
     @action(detail=True, methods=['get'])
     def qoshiqlar(self, request, pk):
         albom = get_object_or_404(Albom, pk=pk)
@@ -62,6 +81,11 @@ class AlbomModelViewSet(ModelViewSet):
 class QoshiqModelViewSet(ModelViewSet):
     queryset = Qoshiq.objects.all()
     serializer_class = QoshiqSerializer
+
+    filter_backends = [SearchFilter, OrderingFilter, DjangoFilterBackend]
+    search_fields = ['nom', 'janr']
+    ordering_fields = ['davomiylik']
+    pagination_class = MyPaginationClass
 
     @action(detail=True, methods=['get'])
     def albom(self, request, pk):
