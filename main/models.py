@@ -1,15 +1,17 @@
 from django.db import models
 
+
 class Qoshiqchi(models.Model):
     ism = models.CharField(max_length=222)
     t_sana = models.DateField()
-    davlat = models.CharField( max_length=222)
+    davlat = models.CharField(max_length=222)
 
     def __str__(self):
         return self.ism
 
     class Meta:
         verbose_name_plural = "Qo'shiqchilar"
+
 
 class Albom(models.Model):
     nom = models.CharField(max_length=222)
@@ -23,6 +25,7 @@ class Albom(models.Model):
     class Meta:
         verbose_name_plural = 'Albomlar'
 
+
 class Qoshiq(models.Model):
     nom = models.CharField(max_length=111)
     janr = models.CharField(max_length=111)
@@ -32,5 +35,6 @@ class Qoshiq(models.Model):
 
     def __str__(self):
         return self.nom
+
     class Meta:
         verbose_name_plural = "Qo'shiqlar"
